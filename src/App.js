@@ -1,50 +1,22 @@
-import React, { Component } from "react"
-import logo from "./logo.svg"
-import "./App.css"
-
-class LambdaDemo extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { loading: false, msg: null }
-  }
-
-  handleClick = api => e => {
-    e.preventDefault()
-
-    this.setState({ loading: true })
-    fetch("/.netlify/functions/" + api)
-      .then(response => response.json())
-      .then(json => this.setState({ loading: false, msg: json.msg }))
-  }
-
-  render() {
-    const { loading, msg } = this.state
-
-    return (
-      <p>
-        <button onClick={this.handleClick("hello")}>{loading ? "Loading..." : "Call Lambda"}</button>
-        <button onClick={this.handleClick("async-dadjoke")}>{loading ? "Loading..." : "Call Async Lambda"}</button>
-        <br />
-        <span>{msg}</span>
-      </p>
-    )
-  }
+import './App.css';
+import Sidebar from './components/Sidebar';
+import { BrowserRouter as Router,Switch,Route} from 'react-router-dom';
+import Overview from './pages/Overview';
+import Item from './pages/overview/Item'
+import { Reports, ReportsOne, ReportsTwo} from './pages/Reports';
+function App() {
+  return (
+   <Router>
+   <Sidebar />
+   <Switch>
+    <Route path='/overview' exact component={Overview}/>
+    <Route path='/overview/item' exact component={Item}/>
+    <Route path='/reports' exact component={Reports}/>
+    <Route path='/reports/reports2' exact component={ReportsOne}/>
+    <Route path='/reports/reports3' exact component={ReportsTwo}/>
+   </Switch>
+   </Router>
+  );
 }
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <LambdaDemo />
-        </header>
-      </div>
-    )
-  }
-}
-
-export default App
+export default App;
